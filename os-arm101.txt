@@ -1,0 +1,106 @@
+leader->1
+flower->0
+
+
+###resource link:
+1) https://wiki.seeedstudio.com/lerobot_so100m_new/#teleoperate
+
+
+##requirements:
+For Ubuntu x86:
+
+Ubuntu 22.04
+CUDA 12+
+Python 3.10
+Torch 2.6+
+For Jetson Orin:
+
+Jetson JetPack 6.0 and 6.1, JetPack 6.2 is not supported yet
+Python 3.10
+Torch 2.3+
+
+for ubuntu 22.04
+
+
+1.Install Miniforge:
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+chmod +x Miniforge3-Linux-x86_64.sh
+./Miniforge3-Linux-x86_64.sh
+# Once the installation is complete:
+source ~/.bashrc
+# Initialize all shells
+conda init --all
+
+
+2.Create and activate a fresh conda environment for lerobot:
+conda create -y -n lerobot python=3.10 && conda activate lerobot
+
+3.Clone Lerobot:
+git clone https://github.com/Seeed-Projects/lerobot.git ~/lerobot
+
+4.When using miniforge, install ffmpeg in your environment:
+conda install ffmpeg -c conda-forge
+
+
+5.new configured ubuntu hole gcc, python library r jonno
+sudo apt update
+sudo apt install build-essential
+
+
+6.Install LeRobot with dependencies for the feetech motors:
+cd ~/lerobot && pip install -e ".[feetech]"
+
+
+
+-----------------at this point installation should be completed successfully------------------------------------------------------
+
+
+
+delete follower celebration:
+
+find ~/.cache -type f -name "*my_awesome_follower_arm*" -delete
+find ~/.local -type f -name "*my_awesome_follower_arm*" -delete
+find ~ -type f -name "*my_awesome_follower_arm*" 2>/dev/null
+
+
+delete leader celebration:
+
+find ~/.cache -type f -name "*my_awesome_leader_arm*" -delete
+find ~/.local -type f -name "*my_awesome_leader_arm*" -delete
+find ~ -type f -name "*my_awesome_leader_arm*" 2>/dev/null
+
+
+set follower celebration:
+
+lerobot-calibrate \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyUSB0 \
+  --robot.id=my_awesome_follower_arm
+
+
+
+
+set leader celebration:
+
+lerobot-calibrate \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm
+
+
+RUN:
+
+sudo chmod 666 /dev/ttyACM*
+
+
+lerobot-teleoperate \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm
+
+
+see port:
+ls /dev/ttyACM*
