@@ -88,24 +88,6 @@ lerobot-setup-motors \
 
 ---
 
-## Clearing Old Calibration Data
-
-**Delete follower calibration:**
-```bash
-find ~/.cache -type f -name "*my_awesome_follower_arm*" -delete
-find ~/.local -type f -name "*my_awesome_follower_arm*" -delete
-find ~ -type f -name "*my_awesome_follower_arm*" 2>/dev/null
-```
-
-**Delete leader calibration:**
-```bash
-find ~/.cache -type f -name "*my_awesome_leader_arm*" -delete
-find ~/.local -type f -name "*my_awesome_leader_arm*" -delete
-find ~ -type f -name "*my_awesome_leader_arm*" 2>/dev/null
-```
-
----
-
 ## Calibration
 
 **Set follower calibration:**
@@ -127,6 +109,25 @@ lerobot-calibrate \
 > ⚠️ **Important:** During calibration, all servos must be positioned at their middle point before you press Enter to start. The reason: whatever angle each follower servo sits at during calibration, the leader's corresponding servo must be set to that same angle. So when the calibration command prompts you to press Enter, first move every servo to its middle position, *then* press Enter to begin calibration.
 
 ---
+
+## Clearing Old Calibration Data(use this if you want to recelebrate)
+
+**Delete follower calibration:**
+```bash
+find ~/.cache -type f -name "*my_awesome_follower_arm*" -delete
+find ~/.local -type f -name "*my_awesome_follower_arm*" -delete
+find ~ -type f -name "*my_awesome_follower_arm*" 2>/dev/null
+```
+
+**Delete leader calibration:**
+```bash
+find ~/.cache -type f -name "*my_awesome_leader_arm*" -delete
+find ~/.local -type f -name "*my_awesome_leader_arm*" -delete
+find ~ -type f -name "*my_awesome_leader_arm*" 2>/dev/null
+```
+
+---
+
 
 ## Running Teleoperation
 
