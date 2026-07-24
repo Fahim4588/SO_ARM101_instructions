@@ -6,7 +6,8 @@ Notes for setting up and running teleoperation with the SO-101 leader/follower a
 - `leader -> 0`
 - `follower -> 1`
 
-**Reference:** [SO-100M LeRobot Wiki (Seeed Studio)](https://wiki.seeedstudio.com/lerobot_so100m_new/#teleoperate)
+**Reference:** [SO-101M LeRobot Wiki (Seeed Studio)](https://wiki.seeedstudio.com/lerobot_so100m_new/#teleoperate)
+               [so-101 Hugging Face community](https://huggingface.co/docs/lerobot/v0.6.0/en/so101)
 
 ---
 
