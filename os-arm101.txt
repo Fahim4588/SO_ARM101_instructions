@@ -1,5 +1,5 @@
-leader->1
-flower->0
+leader->0
+follower->1
 
 
 ###resource link:
@@ -55,6 +55,16 @@ cd ~/lerobot && pip install -e ".[feetech]"
 -----------------at this point installation should be completed successfully------------------------------------------------------
 
 
+see follower servo number:
+lerobot-setup-motors \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyUSB1  # <- paste here the port found at previous step
+
+leader servo number:
+lerobot-setup-motors \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyUSB0  # <- paste here the port found at previous step
+
 
 delete follower celebration:
 
@@ -74,7 +84,7 @@ set follower celebration:
 
 lerobot-calibrate \
   --robot.type=so101_follower \
-  --robot.port=/dev/ttyUSB0 \
+  --robot.port=/dev/ttyUSB1 \
   --robot.id=my_awesome_follower_arm
 
 
@@ -102,5 +112,49 @@ lerobot-teleoperate \
   --teleop.id=my_awesome_leader_arm
 
 
+----------------------------------------------------------------------------------------------------------
+NOW IF I WANT TO RUN FROM A NEW TERMINAL 
+
+conda activate lerobot
+
+cd ~/lerobot
+
+sudo chmod 666 /dev/ttyACM*
+
+lerobot-teleoperate \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm
+
+**DON'T NEED conda init and don't need to source anything
+
+-----------------------------------------------------------------------------------------------------------------
+
+# calebration er time e sob servo position middle e rakhte hobe (main reason calebration er time e follower er each servo er position jei angle e thakbe leader er o same position er servo same angle e thakte hobe) (celebration er er command daoar por jokhon enter dite bolbe er agee e sob servo r angle middle e nia enter dia celebration start korte hobe)
+
+#ekbar celebration delete korar por o jodi new celebration na nei 
+2 ta problem hote pare 
+1.port thik nai 
+2.USB and electrical connection khule abar lagale thik hoya jete pare
+
+# sudo chmod 666 /dev/ttyACM*(run er command er agee eita dite hobe port k read and write er permission dei)
+
+#
+
+
+
+
+-------------------------------------------------------------------------------------------------------
+** to see follower saved celebrated data:
+cat ~/.cache/huggingface/lerobot/calibration/robots/so_follower/my_awesome_follower_arm.json
+
+** to see leader saved celebrated data:
+cat ~/.cache/huggingface/lerobot/calibration/teleoperators/so_leader/my_awesome_leader_arm.json
+
+
 see port:
 ls /dev/ttyACM*
+lerobot-find-port(have not used it yet. need to check what it exactly does)
