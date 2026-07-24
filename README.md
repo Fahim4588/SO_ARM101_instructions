@@ -55,7 +55,7 @@ conda install ffmpeg -c conda-forge
 ```
 
 ### 5. Install build tools
-On a freshly configured Ubuntu system, gcc and Python build libraries are needed:
+On a freshly configured Ubuntu system, gcc and Python build libraries are needed(if gcc and python library already exist the you can skip it):
 ```bash
 sudo apt update
 sudo apt install build-essential
