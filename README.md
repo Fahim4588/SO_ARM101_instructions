@@ -1,25 +1,26 @@
-# LeRobot SO-101 Setup & Teleoperation Guide
+# LeRobot SO100/SO101 Leader-Follower Arm Setup
 
-Notes for setting up and running teleoperation with the SO-101 leader/follower arms using LeRobot.
+Setup and operation notes for a leader-follower robotic arm pair using [LeRobot](https://github.com/Seeed-Projects/lerobot).
 
 **Roles:**
 - `leader -> 0`
 - `follower -> 1`
 
-**Reference:** [SO-100M LeRobot Wiki (Seeed Studio)](https://wiki.seeedstudio.com/lerobot_so100m_new/#teleoperate)
+**Reference:** <br>[SO-101M LeRobot Wiki (Seeed Studio)](https://wiki.seeedstudio.com/lerobot_so100m_new/#teleoperate)<br>
+               [so-101 Hugging Face community](https://huggingface.co/docs/lerobot/v0.6.0/en/so101)
 
 ---
 
 ## Requirements
 
-**Ubuntu x86:**
+### Ubuntu x86
 - Ubuntu 22.04
 - CUDA 12+
 - Python 3.10
 - Torch 2.6+
 
-**Jetson Orin:**
-- JetPack 6.0 or 6.1 (JetPack 6.2 not yet supported)
+### Jetson Orin
+- JetPack 6.0 or 6.1 (**JetPack 6.2 is not yet supported**)
 - Python 3.10
 - Torch 2.3+
 
@@ -32,8 +33,10 @@ Notes for setting up and running teleoperation with the SO-101 leader/follower a
 wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
 chmod +x Miniforge3-Linux-x86_64.sh
 ./Miniforge3-Linux-x86_64.sh
-# Once the installation is complete:
+
+# Once installation is complete:
 source ~/.bashrc
+
 # Initialize all shells
 conda init --all
 ```
@@ -54,53 +57,35 @@ conda install ffmpeg -c conda-forge
 ```
 
 ### 5. Install build tools
-On a freshly configured Ubuntu system, gcc and Python build libraries are needed:
+On a freshly configured Ubuntu machine, install gcc and Python build dependencies:
 ```bash
 sudo apt update
 sudo apt install build-essential
 ```
 
-### 6. Install LeRobot with Feetech motor dependencies
+### 6. Install LeRobot with Feetech motor support
 ```bash
 cd ~/lerobot && pip install -e ".[feetech]"
 ```
 
-> ✅ At this point, installation should be complete.
+> **At this point, installation should be complete.**
 
 ---
 
 ## Motor Setup
 
-**Find follower servo numbers:**
+### Find follower servo numbers
 ```bash
 lerobot-setup-motors \
-  --robot.type=so101_follower \
-  --robot.port=/dev/ttyUSB1  # <- paste the port found in the previous step
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyUSB1  # <- paste the port found in the previous step
 ```
 
-**Find leader servo numbers:**
+### Find leader servo numbers
 ```bash
 lerobot-setup-motors \
-  --robot.type=so101_follower \
-  --robot.port=/dev/ttyUSB0  # <- paste the port found in the previous step
-```
-
----
-
-## Clearing Old Calibration Data
-
-**Delete follower calibration:**
-```bash
-find ~/.cache -type f -name "*my_awesome_follower_arm*" -delete
-find ~/.local -type f -name "*my_awesome_follower_arm*" -delete
-find ~ -type f -name "*my_awesome_follower_arm*" 2>/dev/null
-```
-
-**Delete leader calibration:**
-```bash
-find ~/.cache -type f -name "*my_awesome_leader_arm*" -delete
-find ~/.local -type f -name "*my_awesome_leader_arm*" -delete
-find ~ -type f -name "*my_awesome_leader_arm*" 2>/dev/null
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyUSB0  # <- paste the port found in the previous step
 ```
 
 ---
@@ -127,14 +112,31 @@ lerobot-calibrate \
 
 ---
 
+## Clearing Old Calibration Data(use this if you want to recelebrate)
+
+**Delete follower calibration:**
+```bash
+find ~/.cache -type f -name "*my_awesome_follower_arm*" -delete
+find ~/.local -type f -name "*my_awesome_follower_arm*" -delete
+find ~ -type f -name "*my_awesome_follower_arm*" 2>/dev/null
+```
+
+**Delete leader calibration:**
+```bash
+find ~/.cache -type f -name "*my_awesome_leader_arm*" -delete
+find ~/.local -type f -name "*my_awesome_leader_arm*" -delete
+find ~ -type f -name "*my_awesome_leader_arm*" 2>/dev/null
+```
+
+---
 ## Running Teleoperation
 
-Give read/write permission to the ports first:
+Give the ports read/write permission before running:
 ```bash
 sudo chmod 666 /dev/ttyACM*
 ```
 
-Then run:
+Run teleoperation:
 ```bash
 lerobot-teleoperate \
   --robot.type=so101_follower \
@@ -145,12 +147,7 @@ lerobot-teleoperate \
   --teleop.id=my_awesome_leader_arm
 ```
 
----
-
-## Running From a New Terminal
-
-If you open a new terminal later, you don't need to run `conda init` or source anything again — just:
-
+### Running from a new terminal
 ```bash
 conda activate lerobot
 cd ~/lerobot
@@ -164,10 +161,11 @@ lerobot-teleoperate \
   --teleop.port=/dev/ttyACM0 \
   --teleop.id=my_awesome_leader_arm
 ```
+> **Note:** You do **not** need `conda init` or to source anything again in a new terminal — just activate the environment and run.
 
 ---
 
-## Troubleshooting
+## Troubleshooting Helper Scripts
 
 **If calibration doesn't take effect even after deleting old calibration files and creating a new one**, check:
 1. **Wrong port** — double-check the port name (`/dev/ttyUSB*` or `/dev/ttyACM*`).
@@ -178,6 +176,28 @@ lerobot-teleoperate \
 sudo chmod 666 /dev/ttyACM*
 ```
 This must be run before the teleoperate command each session — it grants read/write permission on the port.
+<br>
+
+### Disable servo torque (to move joints by hand)
+If you're unable to move a joint by hand to set it to the middle position before calibration:
+```bash
+python -m src.tools.servo_disable
+```
+This disables servo torque so the joints can be moved freely by hand.
+
+### Set a custom middle (offset) position
+To define whatever position the arm is currently in as the "middle"/offset position for calibration:
+```bash
+python -m src.tools.servo_middle_calibration
+```
+Whatever position the arm is in when this command is run becomes the new middle/offset.
+
+### Verify the middle (offset) position
+To check that the new middle/offset position was set correctly:
+```bash
+python -m src.tools.servo_center_test
+```
+If the middle position was set correctly, running this command will make the arm automatically move to that position.
 
 ---
 
@@ -195,10 +215,9 @@ cat ~/.cache/huggingface/lerobot/calibration/teleoperators/so_leader/my_awesome_
 
 ---
 
-## Finding the Port
+## Finding Ports
 
 ```bash
 ls /dev/ttyACM*
+lerobot-find-port   # (not yet tested — need to check what exactly this does)
 ```
-
-There's also a `lerobot-find-port` command — not yet tested, need to check exactly what it does.
