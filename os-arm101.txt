@@ -63,7 +63,7 @@ lerobot-setup-motors \
 
 leader servo number:
 lerobot-setup-motors \
-    --robot.type=so101_follower \
+    --robot.type=so101_leader \
     --robot.port=/dev/ttyUSB0  # <- paste here the port found at previous step
 
 

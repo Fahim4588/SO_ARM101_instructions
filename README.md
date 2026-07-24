@@ -7,7 +7,8 @@ Setup and operation notes for a leader-follower robotic arm pair using [LeRobot]
 - `follower -> 1`
 
 **Reference:**
-[SO-101M LeRobot Wiki (Seeed Studio)](https://wiki.seeedstudio.com/lerobot_so100m_new/#teleoperate)
+<br>
+[SO-101M LeRobot Wiki (Seeed Studio)](https://wiki.seeedstudio.com/lerobot_so100m_new/#teleoperate)<br>
 [so-101 Hugging Face community](https://huggingface.co/docs/lerobot/v0.6.0/en/so101)
 
 ---
@@ -90,8 +91,6 @@ lerobot-setup-motors \
     --teleop.type=so101_leader \
     --teleop.port=/dev/ttyUSB0  # <- paste the port found in the previous step
 ```
-
-> **Note:** This step used `--robot.type=so101_follower` in both branches of the original merge conflict, which looks like a copy-paste mistake since this command is for identifying the *leader* arm's servos. It's been corrected here to `--teleop.type=so101_leader`. Double-check this against your own setup before running it.
 
 ---
 
