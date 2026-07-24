@@ -63,6 +63,7 @@ On a freshly configured Ubuntu system, you may need to install GCC and Python bu
 ```bash
 sudo apt update
 sudo apt install build-essential
+```
 
 ### 6. Install LeRobot with Feetech motor support
 ```bash
