@@ -56,16 +56,13 @@ git clone https://github.com/Seeed-Projects/lerobot.git ~/lerobot
 conda install ffmpeg -c conda-forge
 ```
 
-### 5. Install build tools(Use it if you don't have libraries for gcc and python)
-<<<<<<< HEAD
-On a freshly configured Ubuntu machine, install gcc and Python build dependencies:
-=======
-On a freshly configured Ubuntu system, gcc and Python build libraries are needed(if gcc and python library already exist the you can skip it):
->>>>>>> 32a5fd80fa0021393e95c944277081b96ccd7d0e
+### 5. Install Build Tools (Optional)
+
+On a freshly configured Ubuntu system, you may need to install GCC and Python build dependencies. If the required libraries are already installed, you can skip this step.
+
 ```bash
 sudo apt update
 sudo apt install build-essential
-```
 
 ### 6. Install LeRobot with Feetech motor support
 ```bash
