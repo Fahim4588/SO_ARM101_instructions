@@ -4,6 +4,7 @@ follower->1
 
 ###resource link:
 1) https://wiki.seeedstudio.com/lerobot_so100m_new/#teleoperate
+2) https://huggingface.co/docs/lerobot/v0.6.0/en/so101
 
 
 ##requirements:
@@ -142,8 +143,18 @@ lerobot-teleoperate \
 
 # sudo chmod 666 /dev/ttyACM*(run er command er agee eita dite hobe port k read and write er permission dei)
 
-#
 
+#jodifirst e celebration start er agee servo mid position e ante problem hoi:
+python -m src.tools.servo_disable
+eita servo torque diable kore.So we can move the joints(servos) by hand.(use it if you are unable to move it by hand for celebration process)
+
+#jekono position k middile(offset) dore celebration kortehole:
+python -m src.tools.servo_middle_calibration
+jei position e rekhe ei command dibo oi position kei middile(offset) hisabe nibe
+
+#new middile(offset) properly set hoise kina check korar jonno:
+python -m src.tools.servo_center_test
+jodi amar set kora position middile hisabe set hoi tahole ei command dile arm auto oi position e chole jabe
 
 
 

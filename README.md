@@ -56,8 +56,12 @@ git clone https://github.com/Seeed-Projects/lerobot.git ~/lerobot
 conda install ffmpeg -c conda-forge
 ```
 
-### 5. Install build tools
+### 5. Install build tools(Use it if you don't have libraries for gcc and python)
+<<<<<<< HEAD
 On a freshly configured Ubuntu machine, install gcc and Python build dependencies:
+=======
+On a freshly configured Ubuntu system, gcc and Python build libraries are needed(if gcc and python library already exist the you can skip it):
+>>>>>>> 32a5fd80fa0021393e95c944277081b96ccd7d0e
 ```bash
 sudo apt update
 sudo apt install build-essential
@@ -84,8 +88,13 @@ lerobot-setup-motors \
 ### Find leader servo numbers
 ```bash
 lerobot-setup-motors \
+<<<<<<< HEAD
     --robot.type=so101_follower \
     --robot.port=/dev/ttyUSB0  # <- paste the port found in the previous step
+=======
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyUSB0  # <- paste the port found in the previous step
+>>>>>>> 32a5fd80fa0021393e95c944277081b96ccd7d0e
 ```
 
 ---
@@ -129,6 +138,11 @@ find ~ -type f -name "*my_awesome_leader_arm*" 2>/dev/null
 ```
 
 ---
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 32a5fd80fa0021393e95c944277081b96ccd7d0e
 ## Running Teleoperation
 
 Give the ports read/write permission before running:
