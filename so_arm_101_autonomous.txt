@@ -1,0 +1,401 @@
+//check hard disk storage 
+df -h ~
+
+
+//run camera for checking 
+python camera_rerun.py
+
+//dataset save location
+/home/postgrad/fahim
+
+
+// creating and recording dataset
+lerobot-record \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30}}" \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm \
+  --display_data=true \
+  --dataset.repo_id=local/pick_place_second \
+  --dataset.root=/home/postgrad/fahim/datasets_2/pick_place_second_attempt \
+  --dataset.single_task="pick the cube and place it inside the box" \
+  --dataset.num_episodes=80 \
+  --dataset.push_to_hub=false
+
+
+//new
+lerobot-record \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 1920, height: 1080, fps: 30, fourcc: MJPG}}" \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm \
+  --display_data=true \
+  --display_compressed_images=true \
+  --dataset.repo_id=local/pick_place_second_test \
+  --dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_test" \
+  --dataset.single_task="pick the cube and place it inside the box" \
+  --dataset.num_episodes=2 \
+  --dataset.episode_time_s=90 \
+  --dataset.reset_time_s=10 \
+  --dataset.vcodec=h264 \
+  --dataset.push_to_hub=false
+
+//////////////////////
+lerobot-record \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 1280, height: 720, fps: 30, fourcc: MJPG}}" \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm \
+  --display_data=true \
+  --display_compressed_images=true \
+  --dataset.repo_id=local/pick_place_second_720p_test \
+  --dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_720p_test" \
+  --dataset.single_task="pick the cube and place it inside the box" \
+  --dataset.num_episodes=2 \
+  --dataset.episode_time_s=30 \
+  --dataset.reset_time_s=5 \
+  --dataset.vcodec=h264 \
+  --dataset.push_to_hub=false
+
+////////////////////////
+
+
+/////////////////////////
+lerobot-record \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG}}" \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm \
+  --display_data=true \
+  --display_compressed_images=true \
+  --dataset.repo_id=local/pick_place_second_test \
+  --dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_test" \
+  --dataset.single_task="pick the cube and place it inside the box" \
+  --dataset.num_episodes=2 \
+  --dataset.episode_time_s=90 \
+  --dataset.reset_time_s=10 \
+  --dataset.vcodec=h264 \
+  --dataset.push_to_hub=false
+/////////////////////////
+
+//to pause recording 
+press-> Esc
+
+//to start recording again
+lerobot-record \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30}}" \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm \
+  --display_data=true \
+  --dataset.repo_id=local/pick_place_v2 \
+  --dataset.root=/home/postgrad/fahim/datasets/pick_place_v2 \
+  --dataset.single_task="pick the cube and place it" \
+  --dataset.num_episodes=77 \
+  --dataset.push_to_hub=false \
+  --resume=true
+
+//new
+lerobot-record \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 1920, height: 1080, fps: 30, fourcc: MJPG}}" \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm \
+  --display_data=true \
+  --dataset.repo_id=local/pick_place_second_test \
+  --dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_test" \
+  --dataset.single_task="pick the cube and place it inside the box" \
+  --dataset.num_episodes=45 \
+  --dataset.episode_time_s=90 \
+  --dataset.reset_time_s=3 \
+  --dataset.push_to_hub=false \
+  --resume=true
+
+
+///////////////////////////////////////////
+lerobot-record \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG}}" \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm \
+  --display_data=true \
+  --display_compressed_images=true \
+  --dataset.repo_id=local/pick_place_second_test \
+  --dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_test" \
+  --dataset.single_task="pick the cube and place it inside the box" \
+  --dataset.num_episodes=20 \
+  --dataset.episode_time_s=90 \
+  --dataset.reset_time_s=0 \
+  --dataset.vcodec=h264 \
+  --dataset.push_to_hub=false \
+  --resume=true
+//////////////////////////////////
+
+
+
+
+// train in smol-vla
+
+cd ~/lerobot
+
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True lerobot-train \
+  --policy.path=lerobot/smolvla_base \
+  --dataset.repo_id=local/pick_place_v2 \
+  --dataset.root=/home/postgrad/fahim/datasets/pick_place_v2 \
+  --rename_map='{"observation.images.front":"observation.images.camera1"}' \
+  --policy.empty_cameras=0 \
+  --policy.resize_imgs_with_padding='[256,256]' \
+  --policy.use_amp=true \
+  --policy.device=cuda \
+  --batch_size=1 \
+  --num_workers=0 \
+  --steps=10000 \
+  --save_freq=500 \
+  --log_freq=10 \
+  --output_dir=/home/postgrad/fahim/outputs/train/smolvla_pick_place_safe \
+  --job_name=smolvla_pick_place_safe \
+  --wandb.enable=false \
+  --policy.push_to_hub=false
+
+////////////////////////////////////////////////////
+new
+
+cd ~/lerobot
+
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True lerobot-train \
+  --policy.path=lerobot/smolvla_base \
+  --dataset.repo_id=local/pick_place_second_test \
+  --dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_test" \
+  --rename_map='{"observation.images.front":"observation.images.camera1"}' \
+  --policy.empty_cameras=0 \
+  --policy.resize_imgs_with_padding='[256,256]' \
+  --policy.use_amp=true \
+  --policy.device=cuda \
+  --batch_size=1 \
+  --num_workers=0 \
+  --steps=30000 \
+  --policy.scheduler_decay_steps=30000 \
+  --save_freq=5000 \
+  --log_freq=10 \
+  --output_dir="/home/postgrad/fahim/outputs_second/train/smolvla_pick_place_second" \
+  --job_name=smolvla_pick_place_second_30k \
+  --wandb.enable=false \
+  --policy.push_to_hub=false
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+if want to skip episode 14 while training
+
+cd ~/lerobot
+
+EPISODES="$(python -c 'import json; print(json.dumps([i for i in range(71) if i != 14]))')"
+
+PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True lerobot-train \
+  --policy.path=lerobot/smolvla_base \
+  --dataset.repo_id=local/pick_place_second_test \
+  --dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_test" \
+  --dataset.episodes="$EPISODES" \
+  --rename_map='{"observation.images.front":"observation.images.camera1"}' \
+  --policy.empty_cameras=0 \
+  --policy.resize_imgs_with_padding='[256,256]' \
+  --policy.use_amp=true \
+  --policy.device=cuda \
+  --batch_size=1 \
+  --num_workers=0 \
+  --steps=30000 \
+  --policy.scheduler_decay_steps=30000 \
+  --save_freq=5000 \
+  --log_freq=10 \
+  --output_dir="/home/postgrad/fahim/outputs_second/train/smolvla_pick_place_second" \
+  --job_name=smolvla_pick_place_second_30k \
+  --wandb.enable=false \
+  --policy.push_to_hub=false
+
+///////////////////////////////////////////
+
+
+///raw camera feed
+ffplay -f v4l2 -video_size 640x480 -framerate 30 /dev/video0
+
+/new
+ffplay \
+  -f v4l2 \
+  -input_format mjpeg \
+  -video_size 1920x1080 \
+  -framerate 30 \
+  /dev/video0
+
+
+
+
+
+//run 
+
+EVAL_ID="eval_smolvla_$(date +%Y%m%d_%H%M%S)"
+
+lerobot-record \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30}}" \
+  --policy.path=/home/postgrad/fahim/outputs/train/smolvla_pick_place_safe/checkpoints/last/pretrained_model \
+  --policy.input_features='{"observation.state":{"type":"STATE","shape":[6]},"observation.images.front":{"type":"VISUAL","shape":[3,480,640]}}' \
+  --policy.empty_cameras=0 \
+  --policy.resize_imgs_with_padding='[256,256]' \
+  --display_data=true \
+  --display_compressed_images=false \
+  --dataset.repo_id="local/${EVAL_ID}" \
+  --dataset.root="/home/postgrad/fahim/datasets/${EVAL_ID}" \
+  --dataset.single_task="pick the cube and place it" \
+  --dataset.num_episodes=10 \
+  --dataset.episode_time_s=30 \
+  --dataset.reset_time_s=1 \
+  --dataset.push_to_hub=false
+
+//new
+cd ~/lerobot
+
+EVAL_ID="eval_smolvla_$(date +%Y%m%d_%H%M%S)"
+
+lerobot-record \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --robot.cameras="{camera1: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG}}" \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+  --teleop.id=my_awesome_leader_arm \
+  --policy.path="/home/postgrad/fahim/outputs_second/train/smolvla_pick_place_second/checkpoints/030000/pretrained_model" \
+  --policy.empty_cameras=0 \
+  --policy.resize_imgs_with_padding='[256,256]' \
+  --policy.use_amp=true \
+  --policy.device=cuda \
+  --display_data=true \
+  --display_compressed_images=true \
+  --dataset.repo_id="local/${EVAL_ID}" \
+  --dataset.root="/home/postgrad/fahim/datasets_2/${EVAL_ID}" \
+  --dataset.single_task="pick the cube and place it inside the box" \
+  --dataset.num_episodes=1 \
+  --dataset.episode_time_s=30 \
+  --dataset.reset_time_s=5 \
+  --dataset.vcodec=h264 \
+  --dataset.push_to_hub=false
+
+
+
+
+
+/// controlling with leader
+conda activate lerobot
+
+cd ~/lerobot
+
+sudo chmod 666 /dev/ttyACM*
+
+lerobot-teleoperate \
+  --robot.type=so101_follower \
+  --robot.port=/dev/ttyACM1 \
+  --robot.id=my_awesome_follower_arm \
+  --teleop.type=so101_leader \
+  --teleop.port=/dev/ttyACM0 \
+
+
+///see recorded video
+lerobot-dataset-viz \
+  --repo-id local/pick_place_second_test \
+  --root "/home/postgrad/fahim/datasets_2/pick_place_second_test" \
+  --mode local \
+  --episode-index 0 \
+  --display-compressed-images=true
+
+
+
+/////empty  trush 
+gio trash --empty
+
+
+
+///////////////
+verifying that the checkpoints have saved successfully
+
+find "/home/postgrad/fahim/outputs_second" \
+  -name pretrained_model \
+  -printf '%T@ %p\n' |
+  sort -nr
+
+
+
+///////////////////////////
+free -h
+nvidia-smi
+df -h
+//////////////////////////////
+
+
+
+
+
+
+
+#########################################################################################################################
+/////////////////////////////////
+pip install rerun-sdk opencv-python
+
+create -->camera_rerun.py
+
+import cv2
+import rerun as rr
+
+# Initialize Rerun
+rr.init("camera_feedback", spawn=True)
+
+# Open camera
+cap = cv2.VideoCapture(0)
+
+while True:
+    ret, frame = cap.read()
+
+    if not ret:
+        break
+
+    # OpenCV uses BGR; Rerun expects RGB
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+    # Log the camera frame to Rerun
+    rr.log("camera", rr.Image(frame_rgb))
+
+    # Optional: also show using OpenCV
+    cv2.imshow("Camera", frame)
+
+    if cv2.waitKey(1) & 0xFF == ord("q"):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+
+
+reun-->python camera_rerun.py
+##############################################################################################################################################
