@@ -1,116 +1,48 @@
 //check hard disk storage 
 df -h ~
 
+//See port numbers(for both camera and robot arms):
+ls -l /dev/ttyACM* /dev/video*
 
-//run camera for checking 
-python camera_rerun.py
+// See camera feed (Adjust the camera to the correct position)
+ffplay -f v4l2 -input_format mjpeg -video_size 1920x1080 -framerate 30 /dev/video0
+or
+ffplay \
+  -f v4l2 \
+  -input_format mjpeg \
+  -video_size 1920x1080 \
+  -framerate 30 \
+  /dev/video0
 
-//dataset save location
-/home/postgrad/fahim
-
-
-// creating and recording dataset
-lerobot-record \
-  --robot.type=so101_follower \
-  --robot.port=/dev/ttyACM1 \
-  --robot.id=my_awesome_follower_arm \
-  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30}}" \
-  --teleop.type=so101_leader \
-  --teleop.port=/dev/ttyACM0 \
-  --teleop.id=my_awesome_leader_arm \
-  --display_data=true \
-  --dataset.repo_id=local/pick_place_second \
-  --dataset.root=/home/postgrad/fahim/datasets_2/pick_place_second_attempt \
-  --dataset.single_task="pick the cube and place it inside the box" \
-  --dataset.num_episodes=80 \
-  --dataset.push_to_hub=false
-
-
-//new
-lerobot-record \
-  --robot.type=so101_follower \
-  --robot.port=/dev/ttyACM1 \
-  --robot.id=my_awesome_follower_arm \
-  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 1920, height: 1080, fps: 30, fourcc: MJPG}}" \
-  --teleop.type=so101_leader \
-  --teleop.port=/dev/ttyACM0 \
-  --teleop.id=my_awesome_leader_arm \
-  --display_data=true \
-  --display_compressed_images=true \
-  --dataset.repo_id=local/pick_place_second_test \
-  --dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_test" \
-  --dataset.single_task="pick the cube and place it inside the box" \
-  --dataset.num_episodes=2 \
-  --dataset.episode_time_s=90 \
-  --dataset.reset_time_s=10 \
-  --dataset.vcodec=h264 \
-  --dataset.push_to_hub=false
-
-//////////////////////
-lerobot-record \
-  --robot.type=so101_follower \
-  --robot.port=/dev/ttyACM1 \
-  --robot.id=my_awesome_follower_arm \
-  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 1280, height: 720, fps: 30, fourcc: MJPG}}" \
-  --teleop.type=so101_leader \
-  --teleop.port=/dev/ttyACM0 \
-  --teleop.id=my_awesome_leader_arm \
-  --display_data=true \
-  --display_compressed_images=true \
-  --dataset.repo_id=local/pick_place_second_720p_test \
-  --dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_720p_test" \
-  --dataset.single_task="pick the cube and place it inside the box" \
-  --dataset.num_episodes=2 \
-  --dataset.episode_time_s=30 \
-  --dataset.reset_time_s=5 \
-  --dataset.vcodec=h264 \
-  --dataset.push_to_hub=false
-
-////////////////////////
+Explaination:
+ffplay ->Opens and plays the video stream.
+(
+it works like this
+Camera
+   ↓ USB
+/dev/video0
+   ↓
+ffplay
+   ↓
+Live video on your screen
+)
+-f v4l2 ->Tells ffplay that the video source is a Linux camera using Video4Linux2 (V4L2).V4L2 is standard on Linux for handling video devices such as webcams.
+-input_format mjpeg ->Tells the camera to provide the video in MJPEG format.
+-video_size 1920x1080 ->Requests a resolution of 1920 × 1080.
+-framerate 30 ->Requests 30 frames per second (FPS).(clicks 30 images in one second).
+/dev/video0 ->Specifies which camera to use. /dev/video0 is usually the first camera detected by Linux.
 
 
-/////////////////////////
-lerobot-record \
-  --robot.type=so101_follower \
-  --robot.port=/dev/ttyACM1 \
-  --robot.id=my_awesome_follower_arm \
-  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG}}" \
-  --teleop.type=so101_leader \
-  --teleop.port=/dev/ttyACM0 \
-  --teleop.id=my_awesome_leader_arm \
-  --display_data=true \
-  --display_compressed_images=true \
-  --dataset.repo_id=local/pick_place_second_test \
-  --dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_test" \
-  --dataset.single_task="pick the cube and place it inside the box" \
-  --dataset.num_episodes=2 \
-  --dataset.episode_time_s=90 \
-  --dataset.reset_time_s=10 \
-  --dataset.vcodec=h264 \
-  --dataset.push_to_hub=false
-/////////////////////////
 
-//to pause recording 
-press-> Esc
 
-//to start recording again
-lerobot-record \
-  --robot.type=so101_follower \
-  --robot.port=/dev/ttyACM1 \
-  --robot.id=my_awesome_follower_arm \
-  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30}}" \
-  --teleop.type=so101_leader \
-  --teleop.port=/dev/ttyACM0 \
-  --teleop.id=my_awesome_leader_arm \
-  --display_data=true \
-  --dataset.repo_id=local/pick_place_v2 \
-  --dataset.root=/home/postgrad/fahim/datasets/pick_place_v2 \
-  --dataset.single_task="pick the cube and place it" \
-  --dataset.num_episodes=77 \
-  --dataset.push_to_hub=false \
-  --resume=true
 
-//new
+//Here I am saving the dataset to this location
+ /home/postgrad/fahim/datasets_2
+
+//I will give the dataset name ->pick_place_second_test
+
+
+// creating dataset and start recording loop
 lerobot-record \
   --robot.type=so101_follower \
   --robot.port=/dev/ttyACM1 \
@@ -120,17 +52,24 @@ lerobot-record \
   --teleop.port=/dev/ttyACM0 \
   --teleop.id=my_awesome_leader_arm \
   --display_data=true \
+  --display_compressed_images=true \
   --dataset.repo_id=local/pick_place_second_test \
   --dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_test" \
   --dataset.single_task="pick the cube and place it inside the box" \
-  --dataset.num_episodes=45 \
+  --dataset.num_episodes=70 \
   --dataset.episode_time_s=90 \
-  --dataset.reset_time_s=3 \
-  --dataset.push_to_hub=false \
-  --resume=true
+  --dataset.reset_time_s=0 \
+  --dataset.vcodec=h264 \
+  --dataset.push_to_hub=false
 
+##useful features used while recording: 
+1.rerecord current episode -> press left arrow key once
+2.end the episode recording before the episode time ends -> press right arrow key once
+3.start next recording before the reset time ends -> press right arrow key once
+4.if want to pause -> press the Esc key once (it will save the current recording and pause)(if you press Ctrl+C it will stop the recording loop and the current recording will not be saved)
+5.if want to resume recording again -> just add " --resume=true " at the end of the start recording loop commands
 
-///////////////////////////////////////////
+example:
 lerobot-record \
   --robot.type=so101_follower \
   --robot.port=/dev/ttyACM1 \
@@ -150,36 +89,116 @@ lerobot-record \
   --dataset.vcodec=h264 \
   --dataset.push_to_hub=false \
   --resume=true
-//////////////////////////////////
+
+
+
+Learn about the commands used for creating dataset and start recording loop:
+
+1.lerobot-record -->Starts recording a dataset
+2.--robot.type=so101_follower -->Uses an SO101 robot as the follower (the arm that moves)
+3.--robot.port=/dev/ttyACM1 -->Connects to the follower robot through this USB port
+4.--robot.id=my_awesome_follower_arm -->Gives the follower robot a name
+5.--robot.cameras="{...}"  (--robot.cameras="{front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG}}") -->
+
+	Uses a camera named front with:
+	Camera index 0
+	Resolution 1920×1080
+	30 FPS
+	MJPG video format
+
+6.--teleop.type=so101_leader -->Uses another SO101 arm as the leader (the arm you move by hand)
+7.--teleop.port=/dev/ttyACM0 -->Connects to the leader robot
+8.--teleop.id=my_awesome_leader_arm -->Gives the leader robot a name
+9.--display_data=true -->Shows the recorded data while recording
+10.--display_compressed_images=true -->Displays the compressed camera images
+11.--dataset.repo_id=local/pick_place_second_test -->Sets the dataset name/ID
+12.--dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_test"2/pick_place_second_test" -->Saves the dataset in this folder
+13.--dataset.single_task="pick the cube and place it inside the box" -->Describes the task being recorded
+14.--dataset.num_episodes=70 -->Records 70 demonstrations/episodes
+15.--dataset.episode_time_s=90 -->Each demonstration lasts 90 seconds
+16.--dataset.reset_time_s=10 -->Waits 10 seconds between demonstrations so you can reset the scene
+17.--dataset.vcodec=h264 -->Saves videos using the H.264 codec
+18.--dataset.push_to_hub=false -->Keeps the dataset local and does not upload it to the Hugging Face Hub
+19.--resume=true --> start adding demonstrations after already existing demonstrations
+
+
+More detail explanation of some commands and clearing doubts:
+
+1.About MJPG and fourcc
+	MJPG(Motion JPEG)
+	fourcc -->Four Character Code, which specifies the video/pixel format
+
+#MJPG is used for the camera output, not for the final saved video.
+
+#Many USB webcams can send images in MJPG (Motion JPEG), which:
+
+ * Uses less USB bandwidth than raw video.
+ * Allows higher resolutions and frame rates (e.g., 1920×1080 at 30 FPS).
+ * Reduces the chance of dropped frames or camera lag.
+
+#What happens if you don't use MJPG?
+If you omit:
+fourcc: MJPG
+
+the camera will use its default format (often " YUYV " or another format).
+This may result in:
+ * Lower FPS at high resolutions.
+ * Higher USB bandwidth usage.
+ * Camera lag or dropped frames on some webcams.
+
+#How is MJPG different from H.264?
+
+ * MJPG → The format the camera sends to the computer.
+ * H.264 → The format LeRobot saves the recorded videos in the dataset.
+
+So, MJPG helps the camera stream efficiently, while H.264 helps save the recordings efficiently.
+
+2.--display_data=true and --display_compressed_images=true:
+ "--display_data" decides whether any data(image, ...) will my displayed or not 
+ "--display_compressed_images=true" decides how the data will be displayed
+if "--display_compressed_images=true" compressed image (in JPG format)data will be displayed.
+if "--display_compressed_images=false" then raw image will be displayed.
+
+We display compressed image because showing compressed image is more faster and efficient. Compressed image is almost similar to what is getting saved in the dataset.
+
+
+3.--dataset.repo_id=local/pick_place_second_test and --dataset.push_to_hub=false
+
+" dataset.push_to_hub=false " ->it decides whether the dataset will be pushed into the hugging face or not if ture then the dataset will get pushed to hugging face if false the the it will not get pushed
+
+--dataset.repo_id=local/pick_place_second_test -->--dataset.repo_id=namespace/dataset_name(or datset_id)
+
+can be used as namespce --> local or Hugging face user_name
+it doesn't matter what you use as namespace if you set "dataset.push_to_hub=false" the dataset will not get pushed to hugging face it will still store to this location /home/postgrad/fahim/datasets_2/pick_place_second_test(--dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_test")
+
+
+
+4.--dataset.vcodec=h264
+
+it Chooses the video codec used to save the camera videos in the dataset
+A video codec determines how the video is compressed and stored.
+
+h264 is commonly used because it:
+	1.Produces smaller video files.
+	2.Maintains good image quality.
+	3.Is widely supported by video players and tools.
+
+#What happens if you don't specify it?
+If you omit --dataset.vcodec :
+ LeRobot will use its default codec (if one is defined), or
+ It may choose another codec depending on your system and configuration.
+
+The dataset will still be recorded, but the video files may:
+ Be larger.
+ Use a different compression format.
+ Be less compatible with some software.
+
+In short, h264 is recommended because it gives a good balance between file size, quality, and compatibility.
 
 
 
 
 // train in smol-vla
-
-cd ~/lerobot
-
-PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True lerobot-train \
-  --policy.path=lerobot/smolvla_base \
-  --dataset.repo_id=local/pick_place_v2 \
-  --dataset.root=/home/postgrad/fahim/datasets/pick_place_v2 \
-  --rename_map='{"observation.images.front":"observation.images.camera1"}' \
-  --policy.empty_cameras=0 \
-  --policy.resize_imgs_with_padding='[256,256]' \
-  --policy.use_amp=true \
-  --policy.device=cuda \
-  --batch_size=1 \
-  --num_workers=0 \
-  --steps=10000 \
-  --save_freq=500 \
-  --log_freq=10 \
-  --output_dir=/home/postgrad/fahim/outputs/train/smolvla_pick_place_safe \
-  --job_name=smolvla_pick_place_safe \
-  --wandb.enable=false \
-  --policy.push_to_hub=false
-
-////////////////////////////////////////////////////
-new
 
 cd ~/lerobot
 
@@ -205,14 +224,13 @@ PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True lerobot-train \
 
 
 
+If you want to skip episode number N while training
+then add this at the beginning -> EPISODES="$(python -c 'import json; print(json.dumps([i for i in range(71) if i != N]))')"
 
-////////////////////////////////////////////////////////////////////////////////////////
-if want to skip episode 14 while training
+example:(I am skipping episode 14 from the dataset while training)
 
 cd ~/lerobot
-
 EPISODES="$(python -c 'import json; print(json.dumps([i for i in range(71) if i != 14]))')"
-
 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True lerobot-train \
   --policy.path=lerobot/smolvla_base \
   --dataset.repo_id=local/pick_place_second_test \
@@ -234,48 +252,275 @@ PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True lerobot-train \
   --wandb.enable=false \
   --policy.push_to_hub=false
 
-///////////////////////////////////////////
+***
+EPISODES="$(python -c 'import json; print(json.dumps([i for i in range(71) if i != 14]))')"
+It is a Bash shell command that uses Python to create a list of episode numbers.
+In simple terms:
+
+ *EPISODES= → creates a Bash variable called EPISODES.
+ *python -c → runs a small Python program directly from the terminal.
+ *range(71) → creates numbers 0 through 70.
+ *if i != 14 → removes episode 14.
+ *json.dumps(...) → converts the list into JSON format.
+
+So the result is essentially:
+[0, 1, 2, 3, ..., 13, 15, 16, ..., 70]
+So you're creating a list of 71 episodes while skipping episode 14.
+LeRobot itself isn't providing EPISODES=...; you're creating this variable yourself to use later in another command.
+***
 
 
-///raw camera feed
-ffplay -f v4l2 -video_size 640x480 -framerate 30 /dev/video0
 
-/new
-ffplay \
-  -f v4l2 \
-  -input_format mjpeg \
-  -video_size 1920x1080 \
-  -framerate 30 \
-  /dev/video0
+Learn about the commands used for training(SmolVla is used):
+
+1.PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True ->Configures PyTorch to manage GPU memory more efficiently and reduce CUDA memory issues
+2.lerobot-train ->Starts training a robot policy
+3. --policy.path=lerobot/smolvla_base ->Uses the SmolVLA Base model for training
+4. --dataset.repo_id=local/pick_place_second_test ->Selects the dataset to train on (dataset pick_place_second_test dataset name)
+5. --dataset.root="/home/postgrad/fahim/datasets_2/pick_place_second_test" ->Specifies where the dataset is stored
+6. --rename_map='{"observation.images.front":"observation.images.camera1"}' ->Renames the camera from front to camera1 so it matches what the model expects(don't changes the camera name in the dataset just sets a map where the key is the name in my dataset and value is the name needed to train in smolVla)
+7. --policy.empty_cameras=0 ->Tells the model that no camera inputs are missing (If anycamera is missing which was available while recoriding then can adjust that issue during training)
+8. --policy.resize_imgs_with_padding='[256,256]' ->Resizes all camera images to 256 × 256 while preserving their aspect ratio by adding padding if needed
+9. --policy.use_amp=true ->Enables Automatic Mixed Precision (AMP) for faster training and lower GPU memory usage (makes training faster uses 32 bit when needed uses 16 bit when can do the work with 16 bit)
+10. --policy.device=cuda ->Uses the NVIDIA GPU for training
+11. --batch_size=1 ->Trains using 1 sample at a time
+12. --num_workers=0 ->Uses the main process to load the dataset (no additional worker processes)(if increase the number to x then next x number of episodes will be prepared for start trainig immediately after the current training ends)(Doesn't make the training process that much faster)
+13. --steps=30000 ->Trains the model for 30,000 steps
+14. --policy.scheduler_decay_steps=30000 ->Gradually reduces the learning rate over 30,000 steps(Makes the training better and it is ideal set the number same to the number of training steps)(the value decreases after every iterations)
+15. --save_freq=5000 ->Saves a training checkpoint every 5,000 steps
+16. --log_freq=10 ->Prints training logs every 10 steps
+17. --output_dir="/home/postgrad/fahim/outputs_second/train/smolvla_pick_place_second" ->Saves the trained model, checkpoints, and logs in this folder (trained data gets saved at this location)
+18. --job_name=smolvla_pick_place_second_30k ->Gives this training run a name(job_name does not affect how the model learns. It's mainly for identification/organization)
+19. --wandb.enable=false ->Disables logging to Weights & Biases (If true then you will be able to see training output to your display)
+20. --policy.push_to_hub=false ->Keeps the trained model on your computer and does not upload it to the Hugging Face Hub
+
+
+More detail explanation of some commands and clearing doubts:
+
+1. PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True ->
+ #It helps PyTorch manage GPU memory more efficiently
+ #You can think of it as helping PyTorch organize GPU memory so it is less likely to run into memory fragmentation.
+  It doesn't give you more GPU memory. Instead, it makes better use of the memory you already have, which can help avoid some CUDA out-of-memory errors
+  during training.
+ 
+ #CUDA :
+  CUDA is NVIDIA's platform that lets programs use an NVIDIA GPU for heavy computations instead of the CPU
+  
+  When you run   
+  --policy.device=cuda
+  you are telling LeRobot to train the model on the GPU, which is much faster than using the CPU
+
+
+ ** What is a CUDA out-of-memory error?
+ A CUDA out-of-memory (OOM) error happens when the GPU doesn't have enough free memory to continue training.
+ For example, if your GPU has 8 GB of memory but training needs 9 GB, PyTorch will stop and show an error like:
+ CUDA out of memory
+ Sometimes, the GPU actually has enough total memory, but it's split into many small pieces (called memory fragmentation). In that case, PyTorch can't find one large enough block for the next operation, even though some memory is still free.
+ Using:
+ PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+ helps PyTorch manage GPU memory more efficiently, reducing the chance of these fragmentation-related CUDA out-of-memory errors
+
+
+
+2.--policy.path=lerobot/smolvla_base  ->
+ Selects the robot policy (AI model) to train.
+
+In this case, it uses smolvla_base, a pre-defined SmolVLA model provided by LeRobot.
+Think of it like choosing a model architecture before training. Your dataset teaches this model how to perform the task.
+You can replace it with another supported policy if you want to train a different model.
+
+#Why do we write lerobot/smolvla_base?
+lerobot/smolvla_base is the full identifier of the pretrained policy.
+ ** lerobot → The source (the LeRobot collection/namespace).
+ ** smolvla_base → The specific model.
+Writing the full identifier tells LeRobot exactly which pretrained model to load.
+
+#You can not write only smolvla_base because:
+Usually, it won't work because LeRobot expects the full model identifier. Without lerobot/, it may not know where to find the model.
+
+#Why the base version?
+base refers to the size of the model.
+
+Different model sizes may exist, for example:
+
+smolvla_base → Medium-sized model.
+smolvla_large → Larger model (if available).
+smolvla_small → Smaller model (if available).
+
+The Base version is a good balance between:
+
+Training speed
+GPU memory usage
+Model performance
+
+
+
+3. --rename_map='{"observation.images.front":"observation.images.camera1"}' ->
+Renames a field in your dataset before training.
+In your recorded dataset, the camera image is stored as:
+observation.images.front
+
+But the SmolVLA model expects the camera image to be named:
+observation.images.camera1
+So this option tells LeRobot:
+"Whenever you see observation.images.front, treat it as observation.images.camera1."
+It does not rename your dataset on disk. The renaming happens only during training
+
+Without this option:
+  The dataset says: front
+  The model looks for: camera1
+
+Think of it like this:
+  Dataset label: Front Camera
+  Model expects: Camera 1
+
+
+4. --policy.empty_cameras=0 ->
+When the value is set to 0. It tells the model that all expected cameras are available.
+If any camera is missing which has used during dataset recording then it can be adjusted by increasing the value.
+
+
+5.--policy.resize_imgs_with_padding='[256,256]' ->
+Resizes every camera image to 256 × 256.
+
+Neural networks expect all input images to have the same size.
+Your camera records images at:1920 × 1080(or anything else)
+But the SmolVLA model expects:256 × 256
+
+Instead of stretching the image (which would distort it), it:
+ ** Resizes the image while keeping its original shape (aspect ratio).
+ ** Adds padding (empty borders) if needed to make the final image exactly 256 × 256.
+
+
+
+6. --policy.use_amp=true ->
+Enables Automatic Mixed Precision (AMP) during training.
+
+#What is AMP?
+ Normally, the GPU performs calculations using 32-bit numbers (FP32).
+ With AMP, PyTorch automatically uses a mix of:
+  ** 32-bit (FP32) where high precision is needed.
+  ** 16-bit (FP16) where lower precision is enough.
+That's why it's called Automatic Mixed Precision.
+
+#Why use it?
+ Using 16-bit numbers for many calculations:
+  ** Uses less GPU memory.
+  ** Makes training faster on most NVIDIA GPUs.
+ PyTorch automatically decides which calculations can safely use FP16 and which should stay in FP32.
+
+
+If you don't use it,training still works normally, but:
+ ** It may be slower.
+ ** It uses more GPU memory because everything is computed in FP32.
+
+
+7. --batch_size=1 ->
+Tells the model how many training samples to process before updating its weights.
+
+ # What happens if you increase it?
+  For example:
+   batch_size = 1
+    The model sees 1 demonstration sample, then updates itself.
+
+   batch_size = 8
+    The model sees 8 samples together, then updates itself once.
+
+ *Advantages:
+   **Faster training (especially on a GPU).
+   **More stable gradient updates.
+
+ *Disadvantages:
+   **Uses more GPU memory.
+   **If it's too large, you may get a CUDA out-of-memory error.
+
+
+8. --num_workers=0 ->
+Tells PyTorch how many helper processes to use for loading the dataset.
+
+Think of training as two jobs happening at the same time:
+ **Load the next training sample from the dataset.
+ **Train the model on the GPU.
+
+ #What happens if you increase it?
+ For example:
+  --num_workers=4
+  Faster data loading.
+  Better GPU utilization.
+  Uses more CPU and RAM.
+
+ If you set it too high:
+  *The CPU may become overloaded.
+  *You may not see any speed improvement.
+  *Sometimes it can even slow things down.
+
+ #Why we set it to 0?
+ For many LeRobot datasets, especially during initial experiments, 0 is chosen because:
+ *It avoids multiprocessing issues.
+ *It's simple and reliable.
+ *The dataset is usually small enough that loading isn't a major bottleneck.
+
+
+
+9. --policy.scheduler_decay_steps=30000 ->
+Gradually reduces the learning rate over 30,000 training steps.
+
+#First, what is the learning rate?
+The learning rate controls how much the model changes itself after each training step.
+ *High learning rate → Large changes (learns quickly).
+ *Low learning rate → Small changes (fine-tunes carefully).
+
+#Why reduce it over time?
+At the beginning of training, the model knows very little, so it's okay to make large changes.
+As training progresses, the model gets better. Now it only needs small adjustments to improve further.
+That's why the learning rate is gradually reduced.
+
+Think of it like parking a car:
+ *When you're far from the parking spot, you drive faster.
+ *As you get close, you slow down to park accurately.
+Training works in a similar way.
+
+#Why used 30000?
+  --steps=30000
+  --policy.scheduler_decay_steps=30000
+Since both values are 30,000, the learning rate decreases gradually throughout the entire training run.
+In most cases, setting it equal to the total number of training steps is a good choice because the model starts by learning quickly and ends by fine-tuning carefully.
+(At first "--steps" value stars from 0 and ends to 30000 and "--policy.scheduler_decay_steps" value starts from 30000 and ends to 0. In every iteration(steps)the value changes. 
+
+
+10. --wandb.enable=false ->
+It disables Weights & Biases (W&B) logging during training.(Turns Weights & Biases (W&B) tracking off during training.)
+
+Think of W&B as a training-monitoring website/tool. It can collect your training information, such as:
+ **Loss
+ **Learning rate
+ **Training steps
+ **Training graphs
+
+If you use:
+--wandb.enable=true
+LeRobot will send these training metrics to W&B so you can view them in its dashboard.
+
+If you use:
+--wandb.enable=false
+LeRobot doesn't use W&B. Your training still runs normally; you just don't get W&B's online tracking/dashboard.
+
+
+If you enable W&B:
+ *Training metrics such as loss, learning rate, and step number are sent to W&B.
+ *W&B runs in the background and records those metrics.
+ *There can be a small amount of extra CPU/network overhead.
+ *Normally, it does not significantly slow down training.
+ *It won't affect your dataset.
+
 
 
 
 
 
 //run 
+conda activate lerobot
 
-EVAL_ID="eval_smolvla_$(date +%Y%m%d_%H%M%S)"
-
-lerobot-record \
-  --robot.type=so101_follower \
-  --robot.port=/dev/ttyACM1 \
-  --robot.id=my_awesome_follower_arm \
-  --robot.cameras="{front: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30}}" \
-  --policy.path=/home/postgrad/fahim/outputs/train/smolvla_pick_place_safe/checkpoints/last/pretrained_model \
-  --policy.input_features='{"observation.state":{"type":"STATE","shape":[6]},"observation.images.front":{"type":"VISUAL","shape":[3,480,640]}}' \
-  --policy.empty_cameras=0 \
-  --policy.resize_imgs_with_padding='[256,256]' \
-  --display_data=true \
-  --display_compressed_images=false \
-  --dataset.repo_id="local/${EVAL_ID}" \
-  --dataset.root="/home/postgrad/fahim/datasets/${EVAL_ID}" \
-  --dataset.single_task="pick the cube and place it" \
-  --dataset.num_episodes=10 \
-  --dataset.episode_time_s=30 \
-  --dataset.reset_time_s=1 \
-  --dataset.push_to_hub=false
-
-//new
 cd ~/lerobot
 
 EVAL_ID="eval_smolvla_$(date +%Y%m%d_%H%M%S)"
@@ -288,7 +533,7 @@ lerobot-record \
   --teleop.type=so101_leader \
   --teleop.port=/dev/ttyACM0 \
   --teleop.id=my_awesome_leader_arm \
-  --policy.path="/home/postgrad/fahim/outputs_second/train/smolvla_pick_place_second/checkpoints/030000/pretrained_model" \
+  --policy.path="/home/postgrad/fahim/so_arm_101(training)/outputs/outputs_second/train/smolvla_pick_place_second/checkpoints/030000/pretrained_model" \
   --policy.empty_cameras=0 \
   --policy.resize_imgs_with_padding='[256,256]' \
   --policy.use_amp=true \
@@ -298,23 +543,49 @@ lerobot-record \
   --dataset.repo_id="local/${EVAL_ID}" \
   --dataset.root="/home/postgrad/fahim/datasets_2/${EVAL_ID}" \
   --dataset.single_task="pick the cube and place it inside the box" \
-  --dataset.num_episodes=1 \
-  --dataset.episode_time_s=30 \
-  --dataset.reset_time_s=5 \
+  --dataset.num_episodes=100 \
+  --dataset.episode_time_s=1000 \
+  --dataset.reset_time_s=0 \
   --dataset.vcodec=h264 \
   --dataset.push_to_hub=false
 
 
+Learn about the commands used to run(training data):
+1.EVAL_ID="eval_smolvla_$(date +%Y%m%d_%H%M%S)" ->Creates a unique name for the evaluation dataset using the current date and time.(For example:eval_smolvla_20260810_183500)
+2.lerobot-record ->Starts recording robot data.In this case, it is also using your trained policy to control the robot.
+3.--robot.type=so101_follower ->Uses the SO101 follower robot.
+4.--robot.port=/dev/ttyACM1 ->Connects to the follower robot through /dev/ttyACM1.
+5.--robot.id=my_awesome_follower_arm ->Gives the follower robot an ID/name.
+6.--robot.cameras="{camera1: {type: opencv, index_or_path: 0, width: 640, height: 480, fps: 30, fourcc: MJPG}}" ->Uses camera 0 as camera1 with:
+ *Resolution: 640 × 480
+ *FPS: 30
+ *Format: MJPG
+7.--teleop.type=so101_leader ->Uses an SO101 leader arm for teleoperation.
+8.--teleop.port=/dev/ttyACM0 ->Connects to the leader robot through /dev/ttyACM0.
+9.--teleop.id=my_awesome_leader_arm ->Gives the leader robot an ID/name.
+10.--policy.path=".../checkpoints/030000/pretrained_model" ->Loads your trained SmolVLA model from the checkpoint at 30,000 steps.This is the model that will make predictions based on the camera image and control the robot.
+11.--policy.empty_cameras=0 ->Tells the model that no expected camera inputs are missing.
+12.--policy.resize_imgs_with_padding='[256,256]' ->Resizes the camera images to 256 × 256 before sending them to the model.
+13.--policy.use_amp=true ->Enables Automatic Mixed Precision to reduce GPU memory usage and potentially speed up inference.
+14.--policy.device=cuda ->Uses your NVIDIA GPU to run the trained model.
+15.--display_data=true ->Displays the recorded/processed robot data while running.
+16.--display_compressed_images=true ->Displays the compressed camera images.
+17.--dataset.repo_id="local/${EVAL_ID}" ->Sets the evaluation dataset ID using the EVAL_ID you created earlier.(For example:local/eval_smolvla_20260810_183500)
+18.--dataset.root="/home/postgrad/fahim/datasets_2/${EVAL_ID}" ->Saves the evaluation dataset in this folder.(For example:/home/postgrad/fahim/datasets_2/eval_smolvla_20260810_183500)
+19.--dataset.single_task="pick the cube and place it inside the box" ->Describes the task being evaluated.
+20.--dataset.num_episodes=100 ->Records 100 evaluation episodes.
+21.--dataset.episode_time_s=1000 ->Allows each episode to run for a maximum of 1000 seconds.
+22.--dataset.reset_time_s=0 ->Gives 0 seconds for resetting between episodes.
+23.--dataset.vcodec=h264 ->Saves the recorded videos using the H.264 codec.
+24.--dataset.push_to_hub=false ->Keeps the evaluation dataset locally and does not upload it to Hugging Face.
 
 
 
-/// controlling with leader
+
+/// Just enables teleoperation so that you can control the follower arm with the leader arm
 conda activate lerobot
-
 cd ~/lerobot
-
 sudo chmod 666 /dev/ttyACM*
-
 lerobot-teleoperate \
   --robot.type=so101_follower \
   --robot.port=/dev/ttyACM1 \
@@ -323,7 +594,7 @@ lerobot-teleoperate \
   --teleop.port=/dev/ttyACM0 \
 
 
-///see recorded video
+//You can see already recorded episode
 lerobot-dataset-viz \
   --repo-id local/pick_place_second_test \
   --root "/home/postgrad/fahim/datasets_2/pick_place_second_test" \
@@ -331,37 +602,48 @@ lerobot-dataset-viz \
   --episode-index 0 \
   --display-compressed-images=true
 
-
-
-/////empty  trush 
-gio trash --empty
-
-
-
-///////////////
-verifying that the checkpoints have saved successfully
-
-find "/home/postgrad/fahim/outputs_second" \
-  -name pretrained_model \
-  -printf '%T@ %p\n' |
-  sort -nr
+Explaination of the commands:
+1. --repo-id local/pick_place_second_test → dataset name.
+2. --root "/home/postgrad/fahim/datasets_2/pick_place_second_test" → dataset location.
+3. --mode local → load from local storage.
+4. --episode-index 0 → visualize episode 0.
+5. --display-compressed-images=true → display the stored compressed camera images.
 
 
 
-///////////////////////////
-free -h
-nvidia-smi
-df -h
-//////////////////////////////
+//IF You want to empty the tush after training ends run this:(It is good practice to empty the trush after training ends. It will increase free space)
+ gio trash --empty
 
 
 
+///verifying that the checkpoints have saved successfully
+  find "/home/postgrad/fahim/outputs_second" \
+    -name pretrained_model \
+    -printf '%T@ %p\n' |
+     sort -nr
+
+Explainations of the commands
+1. find "/home/postgrad/fahim/outputs_second" → search recursively in that directory.
+2. -name pretrained_model → match items named pretrained_model.
+3. -printf '%T@ %p\n' → print:
+  %T@ = last modification time as a Unix timestamp (seconds since epoch, with decimals),
+  %p = full path.
+4. sort -nr → sort numerically (-n) in reverse order (-r), so the most recently modified pretrained_model directory appears first.	
+ 
+
+
+//A quick snapshot of RAM, GPU, and disk space
+ free -h
+ nvidia-smi
+ df -h
 
 
 
 
 #########################################################################################################################
 /////////////////////////////////
+if want to see camera feed via open cv
+
 pip install rerun-sdk opencv-python
 
 create -->camera_rerun.py
@@ -399,3 +681,6 @@ cv2.destroyAllWindows()
 
 reun-->python camera_rerun.py
 ##############################################################################################################################################
+
+
+
